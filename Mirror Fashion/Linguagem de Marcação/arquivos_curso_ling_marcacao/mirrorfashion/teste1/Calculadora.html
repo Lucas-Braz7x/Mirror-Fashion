@@ -1,0 +1,137 @@
+<html>
+	<head> 
+		<title>Calculadora</title>
+		<style>
+			.borda1{
+				width: 300px; 
+				border:2px solid black;
+				padding: 0.5px;
+				text-align: center;		
+			}
+			.borda2{
+			width: 300px;
+			border-left: 2px solid black;
+			border-right: 2px solid black;
+			border-bottom: 2px solid black;
+			border-radius: 2px solid black;
+			padding: 0.5px;
+			text-align: center;
+			}
+			.borda3{
+			width: 300px;
+			border-left: 2px solid black;
+			border-right: 2px solid black;
+			border-bottom: 2px solid black;
+			border-radius: 2px solid black;
+			padding: 0.5px;
+			padding-left: 2px;
+			}
+
+			.num{}
+			.oper{}
+		</style>
+	</head>
+
+	<body>
+	<div class="borda1">   
+		<img src="hp.jpg" width="150" height="100">
+
+	</div>
+
+	<form name="calcform" method="post" action="">
+   		<fieldset>
+			<div class="borda2" width="300">
+				<input type="text" name="visor" id="visor" />
+			</div>
+	
+			<div class="borda3"> 
+				<input type="button" name="num9" class="num" value="9" onclick="exibir(9)" >
+            		<input type="button" name="num8" class="num" value="8" onclick="exibir(8)" >
+            		<input type="button" name="num7" class="num" value="7" onclick="exibir(7)" >
+            		<input type="button" name="somar" class="oper" value="+" onclick="interacao('somar')" />
+				<div>
+            			<input type="button" name="num6" class="num" value="6" onclick="exibir(6)" >
+					<input type="button" name="num5" class="num" value="5" onclick="exibir(5)" >
+					<input type="button" name="num4" class="num" value="4" onclick="exibir(4)" >
+					<input type="button" name="subtrair" class="oper" value="-" onclick="interacao('subtrair')">
+				</div>
+				<div>
+ 					<input type="button" name="num3" class="num" value="3" onclick="exibir(3)" >
+            			<input type="button" name="num2" class="num" value="2" onclick="exibir(2)" >
+            			<input type="button" name="num1" class="num" value="1" onclick="exibir(1)" >
+            			<input type="button" name="multiplicar" class="oper" value="*" onclick="interacao('multiplicar')">
+				</div>
+				<div>
+				  <input type="button" name="num0" class="num" value="0" onclick="exibir(0)">
+				  <input type="button" name="igual" class="num" value="=" onclick="interacao('resultado')">
+				  <input type="button" name="limpar" class="num" value="AC" onclick="Limpeza()">
+				  <input type="button" name="dividir" class="oper" value="/" onclick="interacao('dividir')">
+				</div>
+			</div>
+		</fieldset>
+	</form>
+	</body>
+
+<script>
+// Função que adiciona os números no Visor quando pressionado os botões
+function exibir(num) {
+   if (typeof tela == 'undefined') {
+      document.calcform.visor.value = '';
+   }
+   document.calcform.visor.value = document.calcform.visor.value + num;
+   tela = 1;
+}
+
+// Função que limpa a calculadora e todas as variáveis existentes.
+function Limpeza() {
+   document.calcform.visor.value = '';
+   delete valor2;
+   delete oper2;
+   delete tela;
+}
+
+// Função que executa as operações básicas da calculadora
+function calculos(operador, v1, v2) {
+   if (operador == "somar") {
+      var valor = parseFloat(v1) + parseFloat(v2);
+   } else {
+      if (operador == "subtrair") {
+         var valor = v1 - v2;
+      } else {
+         if (operador == "multiplicar") {
+            var valor = v1 * v2;
+         } else {
+            var valor = v1 / v2;
+         }
+      }
+   }
+
+   return(valor);
+}
+
+// Função do algoritmo de "passagem" das ações do usuário
+function interacao(operador) {
+   var valor = document.calcform.visor.value;
+   delete tela;
+
+   if (typeof oper2 != 'undefined' && operador == 'resultado') {
+      valor2 = calculos(oper2, valor2, valor);
+      document.calcform.visor.value = valor2;
+      delete operador;
+      delete valor2;
+      return(0);
+   }
+
+   if (typeof valor2 != 'undefined') {
+      valor2 = calculos(oper2, valor2, valor);
+      oper2 = operador;
+      document.calcform.visor.value = valor2;
+   } else {
+      valor2 = valor;
+      oper2 = operador;
+   }
+
+}
+</script>
+
+</html>
